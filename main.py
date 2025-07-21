@@ -83,11 +83,11 @@ def main():
                 line_width=0.5,
                 value_label=True,
             )
-            html_out = f"{year}_{month[i]}_{variables[j]}.html"
-            renderer = hv.renderer('bokeh')
-            bokeh_plot = renderer.get_plot(heatmap*contours).state
-            show(bokeh_plot)
-            hvplot.save((heatmap*contours),filename=html_out,fmt="html")
+            png_out = f"docs/{year}_{month[i]}_{variables[j]}.html"
+            # renderer = hv.renderer('bokeh')
+            # bokeh_plot = renderer.get_plot(heatmap*contours).state
+            # show(bokeh_plot)
+            hvplot.save((heatmap*contours),filename=png_out,fmt="png")
 
 
 if __name__ == "__main__":
