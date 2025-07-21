@@ -10,7 +10,6 @@ hv.extension('bokeh')
 from attrs import frozen, define
 import cmocean.cm as cmo
 
-
 def main():
     extent = Extent(year=2021,
                     north=80,
@@ -72,6 +71,9 @@ class ModelEntry:
     output_path: str = None
 
     def get_data(self) -> ():
+        output_dir = "copernicus_data"
+        file_format = "zarr"
+        skip_existing = True
         start_dt = f"{self.extent.year}-01-01"
         end_dt = f"{self.extent.year}-12-31"
         var_list = []
@@ -79,9 +81,6 @@ class ModelEntry:
             var_list.append(var.name)
         concat_vars = "_".join(var_list)
         output_file = f"{self.dataset_id}_{concat_vars}_{self.extent.north}_{self.extent.south}_{self.extent.east}_{self.extent.west}_{start_dt}_{end_dt}"
-        output_dir = "copernicus_data"
-        file_format = "zarr"
-        skip_existing = True
         self.output_path = f"{output_dir}/{output_file}"
 
         copernicusmarine.subset(dataset_id=self.dataset_id,
