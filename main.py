@@ -52,17 +52,19 @@ def main():
     # Find max valid depth
     max_valid_depth = valid_depths.max().values
 
-
-    for i in range(month.__len__()):
-        for j in range(variables.__len__()):
+    for j in range(variables.__len__()):
+        ds_var = ds[variables[j]]
+        max_valid_vals = np.nanmax(ds_var.values)
+        min_valid_vals = np.nanmin(ds_var.values)
+        for i in range(month.__len__()):
             month_dt = datetime.strptime(f"{month[i]} {year}", "%B %Y")
-            ds_var = ds[variables[j]]
             # select based on valid values
             slice_ds = ds_var.sel(longitude=30,
-                              depth=slice(0,max_valid_depth),
-                              latitude=slice(71,80),
-                              time=slice(month_dt,month_dt+relativedelta(months=+1))
-                              )
+                                  depth=slice(0,max_valid_depth),
+                                  latitude=slice(71,80),
+                                  time=slice(month_dt,month_dt+relativedelta(months=+1))
+                                  )
+
             # Plot with HoloViews (heatmap with contours)
             heatmap = slice_ds.hvplot.quadmesh(
                 x='latitude',
@@ -74,7 +76,8 @@ def main():
                 width=1600,
                 height=600,
                 bgcolor='gray',
-                clabel=units[j]
+                clabel=units[j],
+                clim=(min_valid_vals, max_valid_vals),
             )
             contours = slice_ds.hvplot.contour(
                 x='latitude', y='depth',
