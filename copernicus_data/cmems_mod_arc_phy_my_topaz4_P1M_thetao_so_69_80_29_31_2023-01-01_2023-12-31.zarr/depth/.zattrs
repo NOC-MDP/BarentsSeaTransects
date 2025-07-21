@@ -1,0 +1,10 @@
+{
+  "axis": "Z",
+  "standard_name": "depth",
+  "long_name": "Depth",
+  "units": "m",
+  "positive": "down",
+  "_ARRAY_DIMENSIONS": [
+    "depth"
+  ]
+}

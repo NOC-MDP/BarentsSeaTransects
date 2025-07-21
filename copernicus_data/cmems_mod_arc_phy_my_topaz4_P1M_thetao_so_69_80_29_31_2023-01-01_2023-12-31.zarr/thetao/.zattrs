@@ -1,0 +1,11 @@
+{
+  "long_name": "Sea Temperature",
+  "units": "degrees_C",
+  "standard_name": "sea_water_potential_temperature",
+  "_ARRAY_DIMENSIONS": [
+    "time",
+    "depth",
+    "latitude",
+    "longitude"
+  ]
+}

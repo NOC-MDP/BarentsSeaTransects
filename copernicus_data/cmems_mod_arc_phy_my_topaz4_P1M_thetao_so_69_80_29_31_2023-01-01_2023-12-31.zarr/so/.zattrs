@@ -1,0 +1,11 @@
+{
+  "long_name": "Salinity",
+  "units": "1e-3",
+  "standard_name": "sea_water_salinity",
+  "_ARRAY_DIMENSIONS": [
+    "time",
+    "depth",
+    "latitude",
+    "longitude"
+  ]
+}
