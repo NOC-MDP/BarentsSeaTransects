@@ -1,5 +1,6 @@
 title: Barents Sea
 description: Barents Sea transects
+remote_theme: carlosperate/jekyll-theme-rtd
 
 # Theme settings:
 site_author: tprime
