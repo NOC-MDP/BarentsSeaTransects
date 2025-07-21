@@ -1,0 +1,26 @@
+## Temperature
+
+### January
+![Jan Temperature](2023_January_thetao.png)
+### February
+![Feb Temperature](2023_February_thetao.png)
+### March
+![Mar Temperature](2023_March_thetao.png)
+### April
+![Apr Temperature](2023_April_thetao.png)
+### May
+![May Temperature](2023_May_thetao.png)
+### June
+![Jun Temperature](2023_June_thetao.png)
+### July
+![Jul Temperature](2023_July_thetao.png)
+### August
+![Aug Temperature](2023_August_thetao.png)
+### September
+![Sept Temperature](2023_September_thetao.png)
+### October
+![Oct Temperature](2023_October_thetao.png)
+### November
+![Nov Temperature](2023_November_thetao.png)
+### December
+![Dec Temperature](2023_December_thetao.png)

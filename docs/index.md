@@ -1,6 +1,6 @@
 # Barents Sea Transects
 
-## Salinity Plots
+## Single Parameter Plots
 [Salinity](Salinity.md)
 
 ## Monthly Plots
