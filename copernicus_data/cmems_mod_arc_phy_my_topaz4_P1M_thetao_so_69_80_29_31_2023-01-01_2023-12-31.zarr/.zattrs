@@ -1,8 +1,0 @@
-{
-  "Conventions": "CF-1.4",
-  "source": "NERSC-HYCOM model fields",
-  "institution": "NERSC, Jahnebakken 3, N-5007 Bergen, Norway",
-  "references": "https://doi.org/10.48670/moi-00007",
-  "title": "Arctic Ocean Physics Reanalysis, 12.5km monthly mean",
-  "copernicusmarine_version": "2.2.1"
-}
