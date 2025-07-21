@@ -1,0 +1,26 @@
+## Salinity
+
+### January
+![Jan Salinity](2023_January_so.png)
+### February
+![Feb Salinity](2023_February_so.png)
+### March
+![Mar Salinity](2023_March_so.png)
+### April
+![Apr Salinity](2023_April_so.png)
+### May
+![May Salinity](2023_May_so.png)
+### June
+![Jun Salinity](2023_June_so.png)
+### July
+![Jul Salinity](2023_July_so.png)
+### August
+![Aug Salinity](2023_August_so.png)
+### September
+![Sept Salinity](2023_September_so.png)
+### October
+![Oct Salinity](2023_October_so.png)
+### November
+![Nov Salinity](2023_November_so.png)
+### December
+![Dec Salinity](2023_December_so.png)
