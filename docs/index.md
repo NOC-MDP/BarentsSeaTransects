@@ -6,21 +6,14 @@ nav_exclude: true
 
 # Barents Sea Transects
 
-## Single Parameter Plots
-### [Salinity](Salinity.md)
-### [Temperature](Temperature.md)
-### [Chlorophyll](Chlorophyll.md)
+## Model Used
 
-## Monthly Plots
-### [January](January.md)
-### [February](February.md)
-### [March](March.md)
-### [April](April.md)
-### [May](May.md)
-### [June](June.md)
-### [July](July.md)
-### [August](August.md)
-### [September](September.md)
-### [October](October.md)
-### [November](November.md)
-### [December](December.md)
+Currently two models from CMEMS have been used as the source dataset for the transects. There are:
+
+- Arctic Multiyear BGC 002_005
+  - Temperature
+  - Salinty
+- Arctic Multiyear PHY_ICE 002_016
+  - Chlorophyll
+
+The transect is 30 degrees East longitude running from 71 degrees North to 80 degrees North
