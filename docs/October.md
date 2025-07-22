@@ -1,6 +1,6 @@
 ---
 layout: default
-title: October Monthly
+title: October
 nav_exclude: false
 nav_order: 13
 ---

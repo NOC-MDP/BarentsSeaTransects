@@ -1,6 +1,6 @@
 ---
 layout: default
-title: April Monthly
+title: April
 nav_exclude: false
 nav_order: 7
 ---

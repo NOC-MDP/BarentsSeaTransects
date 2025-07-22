@@ -1,6 +1,6 @@
 ---
 layout: default
-title: December Monthly
+title: December
 nav_exclude: false
 nav_order: 15
 ---

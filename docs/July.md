@@ -1,6 +1,6 @@
 ---
 layout: default
-title: July Monthly
+title: July
 nav_exclude: false
 nav_order: 10
 ---

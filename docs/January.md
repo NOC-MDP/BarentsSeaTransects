@@ -1,6 +1,6 @@
 ---
 layout: default
-title: January Monthly
+title: January
 nav_exclude: false
 nav_order: 4
 ---

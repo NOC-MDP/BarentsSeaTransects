@@ -1,6 +1,6 @@
 ---
 layout: default
-title: November Monthly
+title: November
 nav_exclude: false
 nav_order: 14
 ---

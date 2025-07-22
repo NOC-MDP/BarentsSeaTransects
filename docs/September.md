@@ -1,6 +1,6 @@
 ---
 layout: default
-title: September Monthly
+title: September
 nav_exclude: false
 nav_order: 12
 ---

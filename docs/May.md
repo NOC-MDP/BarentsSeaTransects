@@ -1,6 +1,6 @@
 ---
 layout: default
-title: May Monthly
+title: May
 nav_exclude: false
 nav_order: 8
 ---
