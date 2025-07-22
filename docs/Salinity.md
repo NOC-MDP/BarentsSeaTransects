@@ -1,8 +1,7 @@
 ---
 layout: default
 title: Salinty Plots
-nav_exclude: false
-nav_order: 3
+nav_exclude: true
 ---
 
 ## Salinity

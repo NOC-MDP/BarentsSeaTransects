@@ -1,8 +1,7 @@
 ---
 layout: default
 title: Chlorophyll Plots
-nav_exclude: false
-nav_order: 4
+nav_exclude: true
 ---
 
 ## Cholorophyll
