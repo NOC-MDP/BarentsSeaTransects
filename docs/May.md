@@ -1,10 +1,10 @@
 ## May
 
 ### Temperature
-![May Temperature](2021_May_thetao.png)
+![May Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/May/thetao.png)
 
 ### Salinity
-![May Salinity](2021_May_so.png)
+![May Salinity](cmems_mod_arc_phy_my_topaz4_P1M/2021/May/so.png)
 
 ### Chlorophyll
-![May Chlorophyll](2021_May_chl.png)
+![May Chlorophyll](cmems_mod_arc_bgc_my_ecosmo_P1M/2021/May/chl.png)

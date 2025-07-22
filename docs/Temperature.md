@@ -1,26 +1,30 @@
+---
+id: Temperature
+---
+
 ## Temperature
 
 ### January
-![Jan Temperature](2023_January_thetao.png)
+![Jan Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/January/thetao.png)
 ### February
-![Feb Temperature](2021_February_thetao.png)
+![Feb Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/February/thetao.png)
 ### March
-![Mar Temperature](2021_March_thetao.png)
+![Mar Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/March/thetao.png)
 ### April
-![Apr Temperature](2021_April_thetao.png)
+![Apr Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/April/thetao.png)
 ### May
-![May Temperature](2021_May_thetao.png)
+![May Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/May/thetao.png)
 ### June
-![Jun Temperature](2021_June_thetao.png)
+![Jun Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/June/thetao.png)
 ### July
-![Jul Temperature](2021_July_thetao.png)
+![Jul Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/July/thetao.png)
 ### August
-![Aug Temperature](2021_August_thetao.png)
+![Aug Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/August/thetao.png)
 ### September
-![Sept Temperature](2021_September_thetao.png)
+![Sept Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/September/thetao.png)
 ### October
-![Oct Temperature](2021_October_thetao.png)
+![Oct Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/October/thetao.png)
 ### November
-![Nov Temperature](2021_November_thetao.png)
+![Nov Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/November/thetao.png)
 ### December
-![Dec Temperature](2021_December_thetao.png)
+![Dec Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/December/thetao.png)

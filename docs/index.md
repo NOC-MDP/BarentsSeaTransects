@@ -1,12 +1,9 @@
 # Barents Sea Transects
 
 ## Single Parameter Plots
-[Salinity](Salinity.md)
-
-[Temperature](Temperature.md)
+### [Salinity](Salinity.md)
+### [Temperature](Temperature.md)
 
 ## Monthly Plots
-
-[April](April.md)
-
-[May](May.md)
+### [April](April.md)
+### [May](May.md)

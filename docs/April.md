@@ -1,10 +1,10 @@
 ## April
 
 ### Temperature
-![2023 April Temperature](2021_April_thetao.png)
+![April Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/April/thetao.png)
 
 ### Salinity
-![2023 April Salinity](2021_April_so.png)
+![April Salinity](cmems_mod_arc_phy_my_topaz4_P1M/2021/April/so.png)
 
-### Cholophyll
-![2021 April Chlorophyll](2021_April_chl.png)
+### Chlorophyll
+![April Chlorophyll](cmems_mod_arc_bgc_my_ecosmo_P1M/2021/April/chl.png)

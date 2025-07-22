@@ -1,4 +1,12 @@
-from datetime import datetime, timedelta
+"""
+Script to download CMEMS data, and produce transect plots of the data.
+Different variables and model entries can be specified. NOTE: the lat slice is manually set
+so will probably need tweaking (was unable to robustly ID the valid data edge.)
+"""
+
+
+import os
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import copernicusmarine
 import xarray as xr
@@ -11,6 +19,10 @@ from attrs import frozen, define
 import cmocean.cm as cmo
 
 def main():
+    """
+    creates transect plots, using the extent and Model Entries that are specified.
+    :return:
+    """
     extent = Extent(year=2021,
                     north=80,
                     south=69,
@@ -44,8 +56,8 @@ def main():
 
     Arctic_BGS.get_data()
 
-    Arctic_BGS.plot_transects()
-    Arctic_Phys.plot_transects()
+    Arctic_BGS.plot_transects(longitude=30)
+    Arctic_Phys.plot_transects(longitude=30)
 
 
 @frozen
@@ -97,7 +109,12 @@ class ModelEntry:
                                 skip_existing=skip_existing,
                                 )
 
-    def plot_transects(self,html:bool=False):
+    def plot_transects(self,longitude:float,html:bool=False):
+        # TODO need to figure out how to dynamically set these the start slice in particular
+        latitude_start_slice = 71
+        latitude_end_slice = 80
+
+        assert longitude >= self.extent.west and longitude <= self.extent.east
 
         month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
                  "November", "December"]
@@ -117,9 +134,9 @@ class ModelEntry:
                 # create start of month datetime object
                 month_dt = datetime.strptime(f"{month[i]} {self.extent.year}", "%B %Y")
                 # select based on valid values
-                slice_ds = ds_var.sel(longitude=30,
+                slice_ds = ds_var.sel(longitude=longitude,
                                       depth=slice(0, max_valid_depth),
-                                      latitude=slice(71, 80),
+                                      latitude=slice(latitude_start_slice, latitude_end_slice),
                                       time=slice(month_dt, month_dt + relativedelta(months=+1))
                                       )
                 # create colourmap
@@ -158,7 +175,8 @@ class ModelEntry:
                     bokeh_plot = renderer.get_plot(heatmap*contours).state
                     show(bokeh_plot)
                 else:
-                    png_out = f"docs/{self.extent.year}_{month[i]}_{self.variable[j].name}.png"
+                    os.makedirs(f"docs/{self.dataset_id}/{self.extent.year}/{month[i]}", exist_ok=True)
+                    png_out = f"docs/{self.dataset_id}/{self.extent.year}/{month[i]}/{self.variable[j].name}.png"
                     hvplot.save((heatmap * contours), filename=png_out, fmt="png")
 
 
