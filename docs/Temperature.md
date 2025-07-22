@@ -1,3 +1,9 @@
+---
+layout: default
+title: Page Title Goes Here
+nav_exclude: false
+nav_order: 1
+---
 
 ## Temperature
 

@@ -1,3 +1,7 @@
+---
+layout: default
+title: Page Title Goes Here
+---
 
 # Barents Sea Transects
 
