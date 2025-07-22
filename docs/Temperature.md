@@ -2,7 +2,7 @@
 layout: default
 title: Temperature Plots
 nav_exclude: false
-nav_order: 1
+nav_order: 2
 ---
 
 ## Temperature
