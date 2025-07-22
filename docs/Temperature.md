@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Page Title Goes Here
+title: Temperature Plots
 nav_exclude: false
 nav_order: 1
 ---

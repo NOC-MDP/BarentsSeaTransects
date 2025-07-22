@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Page Title Goes Here
+title: Chlorophyll Plots
 nav_exclude: false
 nav_order: 3
 ---

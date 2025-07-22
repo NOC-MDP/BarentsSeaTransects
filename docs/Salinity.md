@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Page Title Goes Here
+title: Salinty Plots
 nav_exclude: false
 nav_order: 2
 ---
