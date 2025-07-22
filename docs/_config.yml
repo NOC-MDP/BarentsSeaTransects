@@ -1,15 +1,13 @@
 title: Barents Sea Transects
 description: Barents Sea Transects for Arctic mission planning
-remote_theme: thopri/jekyll-theme-rtd
+remote_theme: NOC-MDP/jekyll-theme-rtd
 
 # Theme settings:
 site_author: tprime
-repo_url: "https://github.com/thopri/jekyll-theme-rtd"
+repo_url: "https://github.com/NOC-MDP/jekyll-theme-rtd"
 edit_on_github: true
 github_docs_folder: true
 sticky_navigation: true
 prev_next_buttons_location: bottom
 search_enabled: true
 hljs_style: github-gist
-
-url: https://noc-mdp.github.io/BarentsSeaTransects

@@ -1,8 +1,3 @@
----
-layout: default
-title: Transect main page
-nav_exclude: true
----
 
 # Barents Sea Transects
 
