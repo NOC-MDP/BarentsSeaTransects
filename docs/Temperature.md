@@ -1,5 +1,6 @@
 ---
-id: Temperature
+layout: default
+title: Temperature
 ---
 
 ## Temperature
