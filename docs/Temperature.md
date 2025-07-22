@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Temperature Plots
-nav_exclude: true
+nav_exclude: false
+nav_order: 1
 ---
 
 ## Temperature

@@ -1,7 +1,8 @@
 ---
 layout: default
 title: April Monthly Plot
-nav_exclude: true
+nav_exclude: false
+nav_order: 4
 ---
 
 ## April

@@ -1,7 +1,8 @@
 ---
 layout: default
 title: May Monthly Plots
-nav_exclude: true
+nav_exclude: false
+nav_order: 5
 ---
 
 ## May
