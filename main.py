@@ -23,14 +23,14 @@ def main():
     creates transect plots, using the extent and Model Entries that are specified.
     :return:
     """
-    extent = Extent(year=2021,
+    extent = Extent(year=2023,
                     north=80,
                     south=69,
                     east=31,
                     west=29
                     )
 
-    Arctic_Phys = ModelEntry(dataset_id="cmems_mod_arc_phy_my_topaz4_P1M",
+    Arctic_Phys = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1M-m",
                              variable=[VariableEntry(name="thetao",
                                                        plot_name="temperature",
                                                        colourmap="thermal",
@@ -46,7 +46,7 @@ def main():
 
     Arctic_Phys.get_data()
 
-    Arctic_BGS = ModelEntry(dataset_id="cmems_mod_arc_bgc_my_ecosmo_P1M",
+    Arctic_BGS = ModelEntry(dataset_id="cmems_mod_arc_bgc_anfc_ecosmo_P1M-m",
                             variable=[VariableEntry(name="chl",
                                                     plot_name="chlorophyll",
                                                     colourmap="algae",
@@ -56,8 +56,8 @@ def main():
 
     Arctic_BGS.get_data()
 
-    Arctic_BGS.plot_transects(longitude=30)
-    Arctic_Phys.plot_transects(longitude=30)
+    Arctic_BGS.plot_transects(longitude=30.0)
+    Arctic_Phys.plot_transects(longitude=30.0)
 
 
 @frozen
@@ -111,7 +111,7 @@ class ModelEntry:
 
     def plot_transects(self,longitude:float,html:bool=False):
         # TODO need to figure out how to dynamically set these the start slice in particular
-        latitude_start_slice = 71
+        latitude_start_slice = 69.5
         latitude_end_slice = 80
 
         assert longitude >= self.extent.west and longitude <= self.extent.east
@@ -134,7 +134,8 @@ class ModelEntry:
                 # create start of month datetime object
                 month_dt = datetime.strptime(f"{month[i]} {self.extent.year}", "%B %Y")
                 # select based on valid values
-                slice_ds = ds_var.sel(longitude=longitude,
+                lon_slice = ds.longitude.sel(longitude=longitude, method='nearest').item()
+                slice_ds = ds_var.sel(longitude=lon_slice,
                                       depth=slice(0, max_valid_depth),
                                       latitude=slice(latitude_start_slice, latitude_end_slice),
                                       time=slice(month_dt, month_dt + relativedelta(months=+1))

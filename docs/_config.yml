@@ -11,16 +11,3 @@ sticky_navigation: true
 prev_next_buttons_location: bottom
 search_enabled: true
 hljs_style: github-gist
-
-nav:
-  - heading: Parameters
-  - title: Temperature
-    url: /parameters/temperature
-  - title: Salinity
-    url: /parameters/salinity
-
-  - heading: Months
-  - title: January
-    url: /months/january
-  - title: February
-    url: /months/february

@@ -10,13 +10,13 @@ nav_exclude: true
 
 Currently two models from CMEMS have been used as the source dataset for the transects. There are:
 
-- Arctic Multiyear BGC 002_005
+- Arctic AnalysisForecast PHY 002_001
   - Temperature
   - Salinty
-- Arctic Multiyear PHY_ICE 002_016
+- Arctic AnalysisForecast BGC 002_004
   - Chlorophyll
 
-The transect is 30 degrees East longitude running from 71 degrees North to 80 degrees North
+The transect is 30 degrees East longitude running from 69.5 degrees North to 80 degrees North for the year 2023
 
 ## Monthly plots for a single parameter
 Select the parameter at the top of the side bar, this will show a page with every monthly transect for that parameter

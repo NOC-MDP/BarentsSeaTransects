@@ -8,10 +8,10 @@ nav_order: 8
 ## May
 
 ### Temperature
-![May Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/May/thetao.png)
+![May Temperature](cmems_mod_arc_phy_anfc_6km_detided_P1M-m/2023/May/thetao.png)
 
 ### Salinity
-![May Salinity](cmems_mod_arc_phy_my_topaz4_P1M/2021/May/so.png)
+![May Salinity](cmems_mod_arc_phy_anfc_6km_detided_P1M-m/2023/May/so.png)
 
 ### Chlorophyll
-![May Chlorophyll](cmems_mod_arc_bgc_my_ecosmo_P1M/2021/May/chl.png)
+![May Chlorophyll](cmems_mod_arc_bgc_anfc_ecosmo_P1M-m/2023/May/chl.png)

@@ -8,10 +8,10 @@ nav_order: 5
 ## February
 
 ### Temperature
-![February Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/February/thetao.png)
+![February Temperature](cmems_mod_arc_phy_anfc_6km_detided_P1M-m/2023/February/thetao.png)
 
 ### Salinity
-![February Salinity](cmems_mod_arc_phy_my_topaz4_P1M/2021/February/so.png)
+![February Salinity](cmems_mod_arc_phy_anfc_6km_detided_P1M-m/2023/February/so.png)
 
 ### Chlorophyll
-![February Chlorophyll](cmems_mod_arc_bgc_my_ecosmo_P1M/2021/February/chl.png)
+![February Chlorophyll](cmems_mod_arc_bgc_anfc_ecosmo_P1M-m/2023/February/chl.png)

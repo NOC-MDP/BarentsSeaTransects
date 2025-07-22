@@ -8,10 +8,10 @@ nav_order: 6
 ## March
 
 ### Temperature
-![March Temperature](cmems_mod_arc_phy_my_topaz4_P1M/2021/March/thetao.png)
+![March Temperature](cmems_mod_arc_phy_anfc_6km_detided_P1M-m/2023/March/thetao.png)
 
 ### Salinity
-![March Salinity](cmems_mod_arc_phy_my_topaz4_P1M/2021/March/so.png)
+![March Salinity](cmems_mod_arc_phy_anfc_6km_detided_P1M-m/2023/March/so.png)
 
 ### Chlorophyll
-![March Chlorophyll](cmems_mod_arc_bgc_my_ecosmo_P1M/2021/March/chl.png)
+![March Chlorophyll](cmems_mod_arc_bgc_anfc_ecosmo_P1M-m/2023/March/chl.png)
