@@ -1,3 +1,8 @@
+---
+layout: default
+title: Page Title Goes Here
+nav_exclude: true
+---
 
 ## April
 
