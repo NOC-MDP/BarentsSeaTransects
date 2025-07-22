@@ -1,5 +1,6 @@
 title: Barents Sea Transects
 description: Barents Sea Transects for Arctic mission planning
+remote_theme: NOC-MDP/jekyll-theme-rtd
 
 # Theme settings:
 site_author: tprime
