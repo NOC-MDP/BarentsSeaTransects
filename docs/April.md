@@ -1,6 +1,6 @@
 ---
 layout: default
-title: April Monthly Plot
+title: April Monthly
 nav_exclude: false
 nav_order: 4
 ---

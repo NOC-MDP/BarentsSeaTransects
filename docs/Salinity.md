@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Salinty Plots
+title: Salinty
 nav_exclude: false
 nav_order: 2
 ---
