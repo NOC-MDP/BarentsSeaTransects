@@ -2,7 +2,7 @@
 layout: default
 title: June Monthly
 nav_exclude: false
-nav_order: 6
+nav_order: 9
 ---
 
 ## June

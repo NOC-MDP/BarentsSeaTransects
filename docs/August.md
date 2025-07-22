@@ -2,7 +2,7 @@
 layout: default
 title: August Monthly
 nav_exclude: false
-nav_order: 6
+nav_order: 11
 ---
 
 ## August
