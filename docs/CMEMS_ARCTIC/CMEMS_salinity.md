@@ -2,7 +2,7 @@
 layout: default
 title: Salinity
 nav_order: 2
-parent: CMEMS_ARCTIC
+parent: CMEMS ARCTIC
 ---
 
 ## Salinity
