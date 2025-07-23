@@ -1,8 +1,7 @@
 ---
 layout: default
 title: Barents Sea Transects (30 degrees East)
-nav_exclude: false
-nav_order: 1
+nav_exclude: true
 ---
 
 # Barents Sea Transects
