@@ -1,12 +1,11 @@
 ---
 layout: default
 title: Barents Sea Transects (30 degrees East)
-nav_exclude: true
+nav_exclude: false
+nav_order: 1
 ---
 
 # Barents Sea Transects
-
-## Model Used
 
 Currently three models that have been used as source datasets for the transects. These are:
 
