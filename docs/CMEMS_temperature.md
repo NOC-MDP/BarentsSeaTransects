@@ -1,8 +1,7 @@
 ---
 layout: default
 title: Temperature
-nav_exclude: false
-nav_order: 1
+nav_exclude: true
 ---
 
 ## Temperature

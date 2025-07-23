@@ -1,8 +1,7 @@
 ---
 layout: default
 title: November
-nav_exclude: false
-nav_order: 14
+nav_exclude: true
 ---
 
 ## November

@@ -1,8 +1,7 @@
 ---
 layout: default
 title: April
-nav_exclude: false
-nav_order: 7
+nav_exclude: true
 ---
 
 ## April

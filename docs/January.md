@@ -1,8 +1,7 @@
 ---
 layout: default
 title: January
-nav_exclude: false
-nav_order: 4
+nav_exclude: true
 ---
 
 ## January

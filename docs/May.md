@@ -1,8 +1,7 @@
 ---
 layout: default
 title: May
-nav_exclude: false
-nav_order: 8
+nav_exclude: true
 ---
 
 ## May

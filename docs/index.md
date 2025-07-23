@@ -8,12 +8,16 @@ nav_exclude: true
 
 ## Model Used
 
-Currently two models from CMEMS have been used as the source dataset for the transects. There are:
+Currently three models that have been used as source datasets for the transects. There are:
 
 - Arctic AnalysisForecast PHY 002_001
   - Temperature
   - Salinty
 - Arctic AnalysisForecast BGC 002_004
+  - Chlorophyll
+- NEMO-MEDUSA run, forced by UKESM for scenario SSP370 
+  - Temperature
+  - Salinity
   - Chlorophyll
 
 The transect is 30 degrees East longitude running from 69.5 degrees North to 80 degrees North for the year 2023

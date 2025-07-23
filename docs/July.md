@@ -1,8 +1,7 @@
 ---
 layout: default
 title: July
-nav_exclude: false
-nav_order: 10
+nav_exclude: true
 ---
 
 ## July
