@@ -22,4 +22,4 @@ Currently three models that have been used as source datasets for the transects.
 
 The transect is 30 degrees East longitude running from 69.5 degrees North to 80 degrees North for the year 2023
 
-Select the model of interest in the sidebar, and then the parameter of interest.
+The pages showing the parameter plots are linked on the sidebar.
