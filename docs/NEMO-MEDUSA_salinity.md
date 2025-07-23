@@ -1,8 +1,7 @@
 ---
 layout: default
 title: Salinty
-nav_exclude: false
-nav_order: 2
+nav_exclude: true
 ---
 
 ## Salinity
