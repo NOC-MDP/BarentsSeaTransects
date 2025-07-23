@@ -8,14 +8,14 @@ nav_exclude: true
 
 ## Model Used
 
-Currently three models that have been used as source datasets for the transects. There are:
+Currently three models that have been used as source datasets for the transects. These are:
 
 - Arctic AnalysisForecast PHY 002_001
   - Temperature
   - Salinty
 - Arctic AnalysisForecast BGC 002_004
   - Chlorophyll
-- NEMO-MEDUSA run, forced by UKESM for scenario SSP370 
+- NEMO-MEDUSA run, forced by UKESM for emission scenario SSP370 
   - Temperature
   - Salinity
   - Chlorophyll
