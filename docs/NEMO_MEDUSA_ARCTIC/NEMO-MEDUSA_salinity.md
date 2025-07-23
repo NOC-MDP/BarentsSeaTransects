@@ -2,7 +2,7 @@
 layout: default
 title: Salinity
 nav_order: 2
-parent: NEMO MEDUSA ARCTIC
+parent: NEMO_MEDUSA_ARCTIC
 ---
 
 ## Salinity

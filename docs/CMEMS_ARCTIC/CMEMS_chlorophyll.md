@@ -2,7 +2,7 @@
 layout: default
 title: Chlorophyll
 nav_order: 3
-parent: CMEMS ARCTIC
+parent: CMEMS_ARCTIC
 ---
 
 ## Chlorophyll

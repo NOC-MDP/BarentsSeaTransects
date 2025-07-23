@@ -2,7 +2,7 @@
 layout: default
 title: Chlorophyll
 nav_order: 3
-parent: NEMO MEDUSA ARCTIC
+parent: NEMO_MEDUSA_ARCTIC
 ---
 
 ## Chlorophyll

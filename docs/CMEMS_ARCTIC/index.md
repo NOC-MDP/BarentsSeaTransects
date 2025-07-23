@@ -2,6 +2,6 @@
 layout: default
 title: CMEMS Arctic
 nav_order: 1
-permalink: /CMEMS ARCTIC/
+permalink: /CMEMS_ARCTIC/
 has_children: true
 ---

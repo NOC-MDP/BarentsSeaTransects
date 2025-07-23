@@ -2,7 +2,7 @@
 layout: default
 title: Temperature
 nav_order: 1
-parent: CMEMS ARCTIC
+parent: CMEMS_ARCTIC
 ---
 
 ## Temperature

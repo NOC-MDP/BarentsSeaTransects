@@ -2,7 +2,7 @@
 layout: default
 title: Temperature
 nav_order: 1
-parent: NEMO MEDUSA ARCTIC
+parent: NEMO_MEDUSA_ARCTIC
 ---
 
 ## Temperature
