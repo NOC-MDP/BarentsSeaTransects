@@ -22,8 +22,4 @@ Currently three models that have been used as source datasets for the transects.
 
 The transect is 30 degrees East longitude running from 69.5 degrees North to 80 degrees North for the year 2023
 
-## Monthly plots for a single parameter
-Select the parameter at the top of the side bar, this will show a page with every monthly transect for that parameter
-
-## Single Monthly plots
-Select the month on the side bar this will show each parameter for that month.
+Select the model of interest in the sidebar, and then the parameter of interest.
