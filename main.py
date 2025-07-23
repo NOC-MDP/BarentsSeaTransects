@@ -181,7 +181,7 @@ class ModelEntry:
         # Mask depth coordinates where parameter is valid (not NaN)
         valid_depths = ds[depth_key].where(~np.isnan(ds[self.variable[0].name]))
         # Find max valid depth
-        max_valid_depth = 500 #valid_depths.max().values
+        max_valid_depth = 400 #valid_depths.max().values
 
         for j in range(self.variable.__len__()):
             # get max and min values of variable to set colour map range
