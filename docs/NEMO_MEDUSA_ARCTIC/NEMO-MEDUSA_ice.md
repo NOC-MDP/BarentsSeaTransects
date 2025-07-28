@@ -7,4 +7,4 @@ parent: NEMO_MEDUSA_ARCTIC
 
 ## Ice Extent
 
-![2023 Ice Extent](../NEMO_MEDUSA_ICE/2023/siconc.png)
+![2023 Ice Extent](../NEMO_MEDUSA_ICE/2023/Annual/siconc.png)
