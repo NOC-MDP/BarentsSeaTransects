@@ -12,12 +12,14 @@ Currently three models that have been used as source datasets for the transects.
 - Arctic AnalysisForecast PHY 002_001
   - Temperature
   - Salinty
+  - Sea Ice Concentration
 - Arctic AnalysisForecast BGC 002_004
   - Chlorophyll
 - NEMO-MEDUSA run, forced by UKESM for emission scenario SSP370 
   - Temperature
   - Salinity
   - Chlorophyll
+  - Sea Ice Concentration
 
 The transect is 30 degrees East longitude running from 69.5 degrees North to 80 degrees North for the year 2023
 
