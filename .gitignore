@@ -1,2 +1,4 @@
 *.zarr
 *.nc
+*.html
+__pycache__
