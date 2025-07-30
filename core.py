@@ -265,7 +265,7 @@ class ModelEntry:
         # Find max valid depth
         max_valid_depth = 400  # valid_depths.max().values
         latitude_start_slice = 69.5
-        latitude_end_slice = 80
+        latitude_end_slice = 85
 
         return ds,max_valid_depth,latitude_start_slice,latitude_end_slice
 

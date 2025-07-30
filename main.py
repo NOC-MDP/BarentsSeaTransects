@@ -31,43 +31,43 @@ def main():
     html = False
 
     extent = Extent(year=2023,
-                    north=80,
+                    north=85,
                     south=69,
                     east=31,
                     west=29
                     )
 
-    NEMO_MEDUSA_Phy = ModelEntry(dataset_id="NEMO_MEDUSA_Phy",
-                                 variable=[VariableEntry(name="thetao",
-                                                         plot_name="temperature",
-                                                         colourmap="thermal",
-                                                         units="degreesC",
-                                 ),
-                                            VariableEntry(name="so",
-                                                         plot_name="salinity",
-                                                         colourmap="haline",
-                                                         units="PSU",
-                                                         )
-                                                       ],
-                                 extent=extent,
-                                 output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_T.nc",
-                                 ORCA=True
-                                 )
-
-    NEMO_MEDUSA_BGC = ModelEntry(dataset_id="NEMO_MEDUSA_BGC",
-                                 variable=[VariableEntry(name="CHL",
-                                                         plot_name="chlorophyll",
-                                                         colourmap="algae",
-                                                         units="mmolm-3",)],
-                                 extent=extent,
-                                 output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_CHL.nc",
-                                 ORCA=True)
-
-    NEMO_MEDUSA_Phy.get_data()
-    NEMO_MEDUSA_BGC.get_data()
-
-    NEMO_MEDUSA_BGC.plot_transects(longitude=30.0,html=html)
-    NEMO_MEDUSA_Phy.plot_transects(longitude=30.0,html=html)
+    # NEMO_MEDUSA_Phy = ModelEntry(dataset_id="NEMO_MEDUSA_Phy",
+    #                              variable=[VariableEntry(name="thetao",
+    #                                                      plot_name="temperature",
+    #                                                      colourmap="thermal",
+    #                                                      units="degreesC",
+    #                              ),
+    #                                         VariableEntry(name="so",
+    #                                                      plot_name="salinity",
+    #                                                      colourmap="haline",
+    #                                                      units="PSU",
+    #                                                      )
+    #                                                    ],
+    #                              extent=extent,
+    #                              output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_T.nc",
+    #                              ORCA=True
+    #                              )
+    #
+    # NEMO_MEDUSA_BGC = ModelEntry(dataset_id="NEMO_MEDUSA_BGC",
+    #                              variable=[VariableEntry(name="CHL",
+    #                                                      plot_name="chlorophyll",
+    #                                                      colourmap="algae",
+    #                                                      units="mmolm-3",)],
+    #                              extent=extent,
+    #                              output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_CHL.nc",
+    #                              ORCA=True)
+    #
+    # NEMO_MEDUSA_Phy.get_data()
+    # NEMO_MEDUSA_BGC.get_data()
+    #
+    # NEMO_MEDUSA_BGC.plot_transects(longitude=30.0,html=html)
+    # NEMO_MEDUSA_Phy.plot_transects(longitude=30.0,html=html)
 
     Arctic_Phys = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1M-m",
                              variable=[VariableEntry(name="thetao",
@@ -110,18 +110,18 @@ def main():
 
     Arctic_ICE.get_data()
     Arctic_ICE.plot_ice_extent(longitude=30.0,html=html)
-
-    NEMO_MEDUSA_ICE = ModelEntry(dataset_id="NEMO_MEDUSA_ICE",
-                            variable=[VariableEntry(name="siconc",
-                                                    plot_name="sea ice",
-                                                    units="km")],
-                            extent=extent,
-                            output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_ICE.nc",
-                            ORCA=True)
-
-    NEMO_MEDUSA_ICE.get_data()
-
-    NEMO_MEDUSA_ICE.plot_ice_extent(longitude=30.0,html=html)
+    #
+    # NEMO_MEDUSA_ICE = ModelEntry(dataset_id="NEMO_MEDUSA_ICE",
+    #                         variable=[VariableEntry(name="siconc",
+    #                                                 plot_name="sea ice",
+    #                                                 units="km")],
+    #                         extent=extent,
+    #                         output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_ICE.nc",
+    #                         ORCA=True)
+    #
+    # NEMO_MEDUSA_ICE.get_data()
+    #
+    # NEMO_MEDUSA_ICE.plot_ice_extent(longitude=30.0,html=html)
 
 if __name__ == "__main__":
     main()
