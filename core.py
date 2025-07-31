@@ -13,6 +13,9 @@ from bokeh.io import show
 from attrs import frozen, define
 import cmocean.cm as cmo
 import cftime
+import cartopy.crs as ccrs
+import geoviews as gv
+
 hv.extension('bokeh')
 
 @frozen
@@ -77,17 +80,87 @@ class ModelEntry:
             # TODO need to add a check here to ensure local data source has extent and variables etc required
             pass
 
-    def plot_transects(self,longitude:float,html:bool=False):
+    def plot_map(self,lat_n_slice:float,lat_s_slice:float,html:bool=False):
         """
         Creates monthly transect plots for every variable entry in the model entry
+        :param depth_slice:
+        :param lat_s_slice:
+        :param lat_n_slice:
+        :param longitude:
+        :param html:
+        :return:
+        """
+        # check longitude is within model entry extent
+
+        # get dataset, and depth and latitude/longitude slices
+        ds = self.__process_datasets()
+        for j in range(self.variable.__len__()):
+            for i in range(self.month.__len__()):
+                month_dt, next_month_dt = self.__create_month_dt(month=self.month[i])
+                max_valid_vals, min_valid_vals = self.__colourmap_limits(ds, var_name=self.variable[j].name)
+
+                # slicing dataset four ways!
+                slice_ds = ds.sel(
+                                      latitude=slice(lat_s_slice, lat_n_slice),
+                                      time=slice(month_dt, next_month_dt)
+                                      )
+                # create colourmap
+                if self.variable[j].colourmap is None:
+                    colourmap = cmo.thermal
+                elif self.variable[j].colourmap == "haline":
+                    colourmap = cmo.haline
+                elif self.variable[j].colourmap == "algae":
+                    colourmap = cmo.algae
+                elif self.variable[j].colourmap == "thermal":
+                    colourmap = cmo.thermal
+                else:
+                    raise Exception(f"Unknown colourmap: {self.variable[j].colourmap}")
+                tiles = gv.tile_sources.EsriOceanBase()
+
+                hvplots = gv.util.get_tile_rgb(tiles, bbox=(-40, 60, 100, 85),
+                                               zoom_level=5).opts(width=1000,
+                                                                height=800,
+                                                                #projection=ccrs.NorthPolarStereo()
+                                                                  )
+                # Plot with HoloViews (heatmap with contours)
+                heatmap = slice_ds.hvplot.quadmesh(
+                    y='latitude',
+                    x='longitude',
+                    cmap=colourmap,
+                    colorbar=True,
+                    title=f'{self.variable[j].plot_name} Map: {self.month[i]} {self.extent.year}',
+                    width=1000,
+                    height=800,
+                    clabel=self.variable[j].units,
+                    clim=(min_valid_vals, max_valid_vals),
+                    crs=ccrs.PlateCarree(), #projection=ccrs.NorthPolarStereo(),
+                    project=True, rasterize=True,
+                    # features={"coastline":'10m','borders':'10m','ocean':'10m','land':'10m'},
+
+                )
+                self.__export(hvplots*heatmap, html=html, var_name=self.variable[j].name, month=self.month[i])
+
+
+
+
+
+    def plot_transects(self,longitude:float,lat_n_slice:float,lat_s_slice:float,depth_slice:float,html:bool=False):
+        """
+        Creates monthly transect plots for every variable entry in the model entry
+        :param depth_slice:
+        :param lat_s_slice:
+        :param lat_n_slice:
         :param longitude:
         :param html:
         :return:
         """
         # check longitude is within model entry extent
         assert self.extent.west <= longitude <= self.extent.east
+        assert lat_s_slice <= lat_n_slice
+        assert self.extent.south >= lat_s_slice <= self.extent.north
+        assert self.extent.south >= lat_n_slice <= self.extent.north
         # get dataset, and depth and latitude/longitude slices
-        ds,max_valid_depth,latitude_start_slice,latitude_end_slice = self.__process_datasets()
+        ds = self.__process_datasets()
         # for each variable
         for j in range(self.variable.__len__()):
             # get the variable from the dataset
@@ -103,8 +176,8 @@ class ModelEntry:
                 lon_slice = ds_var.longitude.sel(longitude=longitude, method='nearest').item()
                 # slicing dataset four ways!
                 slice_ds = ds_var.sel(longitude=lon_slice,
-                                      depth=slice(0, max_valid_depth),
-                                      latitude=slice(latitude_start_slice, latitude_end_slice),
+                                      depth=slice(0, depth_slice),
+                                      latitude=slice(lat_s_slice, lat_n_slice),
                                       time=slice(month_dt, next_month_dt)
                                       )
                 # create colourmap
@@ -142,7 +215,7 @@ class ModelEntry:
                 # export to html or png
                 self.__export(heatmap*contours,html=html,var_name=self.variable[j].name,month=self.month[i])
 
-    def plot_ice_extent(self,longitude:float,html:bool=False,threshold:float=0.05):
+    def plot_ice_extent(self,longitude:float,lat_n_slice:float,lat_s_slice:float,html:bool=False,threshold:float=0.05):
         """
         creates an annual ice extent plot for the longitude transect for every variable entry in the model entry
         :param longitude:
@@ -152,8 +225,11 @@ class ModelEntry:
         """
         # check longitude is within extent
         assert self.extent.west <= longitude <= self.extent.east
+        assert lat_s_slice <= lat_n_slice
+        assert self.extent.south >= lat_s_slice <= self.extent.north
+        assert self.extent.south >= lat_n_slice <= self.extent.north
         # get dataset and depth, and lat/lon slices
-        ds,max_valid_depth,latitude_start_slice,latitude_end_slice = self.__process_datasets()
+        ds = self.__process_datasets()
         # for each variable
         for j in range(self.variable.__len__()):
             # get variable dataset
@@ -172,7 +248,7 @@ class ModelEntry:
                 lon_slice = ds_var.longitude.sel(longitude=longitude, method='nearest').item()
                 # slice three ways!
                 slice_ds = ds_var.sel(longitude=lon_slice,
-                                      latitude=slice(latitude_start_slice, latitude_end_slice),
+                                      latitude=slice(lat_s_slice, lat_n_slice),
                                       time=slice(month_dt, next_month_dt)
                                       )
                 try:
@@ -255,19 +331,7 @@ class ModelEntry:
         else:
             raise Exception("unsupported file format")
 
-        # TODO do a better job here than a hardcoded depths and lat slices
-        # if not self.ORCA:
-        #     depth_key = "depth"
-        # else:
-        #     depth_key = "deptht"
-        # # Mask depth coordinates where parameter is valid (not NaN)
-        # valid_depths = ds[depth_key].where(~np.isnan(ds[self.variable[0].name]))
-        # Find max valid depth
-        max_valid_depth = 400  # valid_depths.max().values
-        latitude_start_slice = 69.5
-        latitude_end_slice = 85
-
-        return ds,max_valid_depth,latitude_start_slice,latitude_end_slice
+        return ds
 
     def __regrid_ORCA(self,ds_var:xr.DataArray,var_name:str) -> xr.Dataset:
         """
