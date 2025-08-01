@@ -115,13 +115,13 @@ class ModelEntry:
                     colourmap = cmo.thermal
                 else:
                     raise Exception(f"Unknown colourmap: {self.variable[j].colourmap}")
-                tiles = gv.tile_sources.EsriOceanBase()
+                # tiles = gv.tile_sources.EsriOceanBase()
 
-                hvplots = gv.util.get_tile_rgb(tiles, bbox=(-40, 60, 100, 85),
-                                               zoom_level=5).opts(width=1000,
-                                                                height=800,
-                                                                #projection=ccrs.NorthPolarStereo()
-                                                                  )
+                # hvplots = gv.util.get_tile_rgb(tiles, bbox=(-40, 60, 100, 85),
+                #                                zoom_level=5).opts(width=1000,
+                #                                                 height=800,
+                #                                                 #projection=ccrs.NorthPolarStereo()
+                #                                                   )
                 # Plot with HoloViews (heatmap with contours)
                 heatmap = slice_ds.hvplot.quadmesh(
                     y='latitude',
@@ -133,12 +133,12 @@ class ModelEntry:
                     height=800,
                     clabel=self.variable[j].units,
                     clim=(min_valid_vals, max_valid_vals),
-                    crs=ccrs.PlateCarree(), #projection=ccrs.NorthPolarStereo(),
+                    crs=ccrs.PlateCarree(), projection=ccrs.NorthPolarStereo(),
                     project=True, rasterize=True,
-                    # features={"coastline":'10m','borders':'10m','ocean':'10m','land':'10m'},
+                    features={"coastline":'50m','borders':'50m','ocean':'50m','land':'50m'},
 
                 )
-                self.__export(hvplots*heatmap, html=html, var_name=self.variable[j].name, month=self.month[i])
+                self.__export(heatmap, html=html, var_name=self.variable[j].name, month=self.month[i])
 
 
 

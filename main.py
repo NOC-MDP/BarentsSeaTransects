@@ -31,7 +31,7 @@ def main():
     creates transect plots, using the extent and Model Entries that are specified.
     :return:
     """
-    html = False
+    html = True
 
     extent = Extent(year=2023,
                     north=85,
