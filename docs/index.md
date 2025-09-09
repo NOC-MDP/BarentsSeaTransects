@@ -21,6 +21,11 @@ Currently three models that have been used as source datasets for the transects.
   - Chlorophyll
   - Sea Ice Concentration
 
-The transect is 30 degrees East longitude running from 69.5 degrees North to 80 degrees North for the year 2023
+The Arctic Analysis model has a GEBCO bathymetry overlay (any gaps resulting from this are filled) and a reduced 
+transect from 72 to 79 degrees North.
+
+The NEMO-MEDUSA model currently has no overlay and is a larger transect of 69.5 to 80 degrees North.
+
+Both models show the year 2023.
 
 The pages showing the parameter plots are linked on the sidebar.
