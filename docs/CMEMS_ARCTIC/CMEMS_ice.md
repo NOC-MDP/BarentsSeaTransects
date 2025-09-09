@@ -36,4 +36,4 @@ Daily mean video showing ice extent for 2023
 ### November
 ![Nov Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/November/ice_extent_day_305.png)
 ### December
-![Dec Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/December/ice_extent_day_355.png)
+![Dec Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/December/ice_extent_day_335.png)
