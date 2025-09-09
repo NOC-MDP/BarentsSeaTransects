@@ -6,7 +6,11 @@ parent: CMEMS_ARCTIC
 ---
 
 ## Ice Extent
-<iframe width="500" height="300" src="../cmems_mod_arc_phy_anfc_6km_detided_P1B-m/2023/Annual/output.mp4" frameborder="0" allowfullscreen></iframe>
+<video width="1280" height="720" controls autoplay muted loop playsinline>
+<source  src="../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/Annual/output.mp4" type="video/mp4">
+ Your browser does not support the video tag.
+</video>
+
 
 ### January
 ![Jan Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/January/ice_extent_day_1.png)
