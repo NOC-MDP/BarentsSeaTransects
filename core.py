@@ -14,7 +14,6 @@ from attrs import frozen, define
 import cmocean.cm as cmo
 import cftime
 import cartopy.crs as ccrs
-import geoviews as gv
 
 hv.extension('bokeh')
 
@@ -43,6 +42,7 @@ class ModelEntry:
     ORCA: bool = False
     horizontal_resolution: float = (1/12)
     month: list[str] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"]
+    bathy_path: str = "GEBCO_2025_sub_ice.nc"
 
     def get_data(self) -> ():
         """
@@ -83,10 +83,8 @@ class ModelEntry:
     def plot_map(self,lat_n_slice:float,lat_s_slice:float,html:bool=False):
         """
         Creates monthly transect plots for every variable entry in the model entry
-        :param depth_slice:
         :param lat_s_slice:
         :param lat_n_slice:
-        :param longitude:
         :param html:
         :return:
         """
@@ -140,10 +138,6 @@ class ModelEntry:
                 )
                 self.__export(heatmap, html=html, var_name=self.variable[j].name, month=self.month[i])
 
-
-
-
-
     def plot_transects(self,longitude:float,lat_n_slice:float,lat_s_slice:float,depth_slice:float,html:bool=False):
         """
         Creates monthly transect plots for every variable entry in the model entry
@@ -157,8 +151,8 @@ class ModelEntry:
         # check longitude is within model entry extent
         assert self.extent.west <= longitude <= self.extent.east
         assert lat_s_slice <= lat_n_slice
-        assert self.extent.south >= lat_s_slice <= self.extent.north
-        assert self.extent.south >= lat_n_slice <= self.extent.north
+        assert self.extent.south <= lat_s_slice <= self.extent.north
+        assert self.extent.south <= lat_n_slice <= self.extent.north
         # get dataset, and depth and latitude/longitude slices
         ds = self.__process_datasets()
         # for each variable
@@ -174,12 +168,35 @@ class ModelEntry:
                 max_valid_vals,min_valid_vals = self.__colourmap_limits(ds_var,var_name=self.variable[j].name)
                 # select slices by getting closest longitude
                 lon_slice = ds_var.longitude.sel(longitude=longitude, method='nearest').item()
+                # open and slice bathy
+                bathy_ds = xr.open_dataset(self.bathy_path)
+                bathy_var = bathy_ds["elevation"]
+                bathy_lon_slice = bathy_ds.lon.sel(lon=longitude, method='nearest').item()
+                bathy_slice = bathy_var.sel(lon=bathy_lon_slice,lat=slice(lat_s_slice, lat_n_slice))
+                bathy_slice = bathy_slice * -1
+
+                # construct polygon coordinates
+                x_vals = bathy_slice["lat"].values
+                bathy_vals = bathy_slice.values
+
+                # polygon that goes from bathy down to max depth
+                x_poly = np.concatenate([x_vals, x_vals[::-1]])
+                y_poly = np.concatenate([bathy_vals, np.full_like(x_vals, bathy_vals.max())])
+
+                bathy_polygon = hv.Polygons([{"x": x_poly, "y": y_poly}]).opts(
+                    fill_color="gray",  # or background colour
+                    line_color="black"
+                )
                 # slicing dataset four ways!
                 slice_ds = ds_var.sel(longitude=lon_slice,
                                       depth=slice(0, depth_slice),
                                       latitude=slice(lat_s_slice, lat_n_slice),
                                       time=slice(month_dt, next_month_dt)
                                       )
+                # interpolate to fill gaps at bottom due to coarse grid and fine bathy
+                slice_ds_interp = slice_ds.interpolate_na(dim="latitude")
+                slice_ds_interp = slice_ds_interp.ffill(dim="depth")
+
                 # create colourmap
                 if self.variable[j].colourmap is None:
                     colourmap = cmo.thermal
@@ -192,7 +209,7 @@ class ModelEntry:
                 else:
                     raise Exception(f"Unknown colourmap: {self.variable[j].colourmap}")
                 # Plot with HoloViews (heatmap with contours)
-                heatmap = slice_ds.hvplot.quadmesh(
+                heatmap = slice_ds_interp.hvplot.quadmesh(
                     x='latitude',
                     y='depth',
                     cmap=colourmap,
@@ -201,23 +218,25 @@ class ModelEntry:
                     title=f'Latitude–Depth Transect: {self.variable[j].plot_name} {self.month[i]} {self.extent.year}',
                     width=1600,
                     height=600,
-                    bgcolor='gray',
                     clabel=self.variable[j].units,
                     clim=(min_valid_vals, max_valid_vals),
+                    xlim=(lat_s_slice,lat_n_slice),
+                    ylim=(0,bathy_vals.max())
                 )
                 contours = slice_ds.hvplot.contour(
                     x='latitude', y='depth',
-                    levels=20,
                     color='black',
                     line_width=0.5,
                     value_label=True,
                 )
                 # export to html or png
-                self.__export(heatmap*contours,html=html,var_name=self.variable[j].name,month=self.month[i])
+                self.__export(heatmap*contours*bathy_polygon,html=html,var_name=self.variable[j].name,month=self.month[i])
 
     def plot_ice_extent(self,longitude:float,lat_n_slice:float,lat_s_slice:float,html:bool=False,threshold:float=0.05):
         """
         creates an annual ice extent plot for the longitude transect for every variable entry in the model entry
+        :param lat_s_slice:
+        :param lat_n_slice:
         :param longitude:
         :param html:
         :param threshold:
@@ -318,7 +337,7 @@ class ModelEntry:
         c = 2 * np.arcsin(np.sqrt(a))
         return R * c
 
-    def __process_datasets(self) -> (xr.Dataset,int,float,float):
+    def __process_datasets(self) -> xr.Dataset:
         """
         Opens input datasets as a xarray dataset, and not much else!
         :return:
@@ -378,7 +397,8 @@ class ModelEntry:
         ds_var = ds_var.where(ds_var != 0)
         return ds_var
 
-    def __colourmap_limits(self,ds_var,var_name:str) -> (float,float):
+    @staticmethod
+    def __colourmap_limits(ds_var, var_name:str) -> (float, float):
         """
         Determining colourmap limits for plotting purposes, any values outside of 5th and 95th percentiles are discarded.
         :param ds_var:
