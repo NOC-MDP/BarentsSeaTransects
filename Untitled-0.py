@@ -17,7 +17,7 @@ layout = layout_manager.layoutByName("Layout 1")
 raster_layer = QgsProject.instance().mapLayersByName('/siconc')[0]
 
 # === 4. Load coordinates & rotation from CSV ===
-csv_path = "/disco/example_disco_trajectory.csv"
+csv_path = "/Users/thopri/BarentsSeaTransects/disco/example_disco_trajectory.csv"
 # Expect CSV columns: step,x,y,rotation
 trajectory = []
 with open(csv_path, newline='') as csvfile:
@@ -39,27 +39,27 @@ for step, row in enumerate(trajectory, start=1):
         raster_layer.triggerRepaint()
 
     # Get your point layer by name
-    layer = QgsProject.instance().mapLayersByName('disco_loc')[0]
+    #layer = QgsProject.instance().mapLayersByName('disco_loc')[0]
     
     # Start editing the layer
-    layer.startEditing()
+    #layer.startEditing()
 
     # Get the only feature (or use a specific ID if needed)
-    feature = next(layer.getFeatures())
+    #feature = next(layer.getFeatures())
     
         # === Update rotation attribute ===
-    layer.startEditing()
-    rotation_idx = layer.fields().indexOf('rotation')
-    if rotation_idx != -1:
-        layer.changeAttributeValue(feature.id(), rotation_idx, row["rotation"])
-    layer.commitChanges()
+    #layer.startEditing()
+    #rotation_idx = layer.fields().indexOf('rotation')
+    #if rotation_idx != -1:
+    #    layer.changeAttributeValue(feature.id(), rotation_idx, row["rotation"])
+    #layer.commitChanges()
     
     # === Update geometry (position) ===
-    layer.startEditing()
-    new_geom = QgsGeometry.fromPointXY(QgsPointXY(row["x"], row["y"]))
-    layer.changeGeometry(feature.id(), new_geom)
-    layer.commitChanges()
-    layer.triggerRepaint()
+    #layer.startEditing()
+    #new_geom = QgsGeometry.fromPointXY(QgsPointXY(row["x"], row["y"]))
+    #layer.changeGeometry(feature.id(), new_geom)
+    #layer.commitChanges()
+    #layer.triggerRepaint()
 
     # 5. Export layout
     exporter = QgsLayoutExporter(layout)
