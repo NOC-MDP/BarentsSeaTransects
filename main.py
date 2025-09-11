@@ -42,7 +42,7 @@ def main():
     # set the latitude start, end slices as well as depth slice. These may require tweaking
     latitude_n_slice = 79
     latitude_s_slice = 72
-    depth_slice = 400
+    depth_slice = 500
 
     NEMO_MEDUSA_Phy = ModelEntry(dataset_id="NEMO_MEDUSA_Phy",
                                  variable=[VariableEntry(name="thetao",
