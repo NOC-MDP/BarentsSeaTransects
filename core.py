@@ -245,8 +245,8 @@ class ModelEntry:
         # check longitude is within extent
         assert self.extent.west <= longitude <= self.extent.east
         assert lat_s_slice <= lat_n_slice
-        assert self.extent.south >= lat_s_slice <= self.extent.north
-        assert self.extent.south >= lat_n_slice <= self.extent.north
+        assert self.extent.south <= lat_s_slice <= self.extent.north
+        assert self.extent.south <= lat_n_slice <= self.extent.north
         # get dataset and depth, and lat/lon slices
         ds = self.__process_datasets()
         # for each variable
