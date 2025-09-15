@@ -11,7 +11,7 @@ project.read('/Users/thopri/BarentsSeaTransects/Ice_Extent_Map.qgz')
 
 # 2. Get the layout manager and layout
 layout_manager = project.layoutManager()
-layout = layout_manager.layoutByName("Layout 1")
+layout = layout_manager.layoutByName("Layout 2")
 
 # 3. Get the raster layer
 raster_layer = QgsProject.instance().mapLayersByName('/siconc')[0]
@@ -63,5 +63,5 @@ for step, row in enumerate(trajectory, start=1):
 
     # 5. Export layout
     exporter = QgsLayoutExporter(layout)
-    output_path = f"/Users/thopri/BarentsSeaTransects/Arctic_Ice_Extent_2023/ice_extent_day_{step}.png"
+    output_path = f"/Users/thopri/BarentsSeaTransects/Arctic_Ice_Extent_2023/ice_extent_day_{step}_layout2.png"
     exporter.exportToImage(output_path, QgsLayoutExporter.ImageExportSettings())

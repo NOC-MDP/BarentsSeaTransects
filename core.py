@@ -14,6 +14,7 @@ from attrs import frozen, define
 import cmocean.cm as cmo
 import cftime
 import cartopy.crs as ccrs
+import matplotlib.colors as mcolors
 
 hv.extension('bokeh')
 
@@ -43,6 +44,7 @@ class ModelEntry:
     horizontal_resolution: float = (1/12)
     month: list[str] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"]
     bathy_path: str = "GEBCO_2025_sub_ice.nc"
+    traj_path: str = None
 
     def get_data(self) -> ():
         """
@@ -111,6 +113,8 @@ class ModelEntry:
                     colourmap = cmo.algae
                 elif self.variable[j].colourmap == "thermal":
                     colourmap = cmo.thermal
+                elif self.variable[j].colourmap == "ice":
+                    colourmap = cmo.ice
                 else:
                     raise Exception(f"Unknown colourmap: {self.variable[j].colourmap}")
                 # tiles = gv.tile_sources.EsriOceanBase()
@@ -181,7 +185,7 @@ class ModelEntry:
 
                 # polygon that goes from bathy down to max depth
                 x_poly = np.concatenate([x_vals, x_vals[::-1]])
-                y_poly = np.concatenate([bathy_vals, np.full_like(x_vals, bathy_vals.max())])
+                y_poly = np.concatenate([bathy_vals, np.full_like(x_vals, depth_slice)])
 
                 bathy_polygon = hv.Polygons([{"x": x_poly, "y": y_poly}]).opts(
                     fill_color="gray",  # or background colour
@@ -208,8 +212,10 @@ class ModelEntry:
                     colourmap = cmo.thermal
                 else:
                     raise Exception(f"Unknown colourmap: {self.variable[j].colourmap}")
+                # clip dataset to match colourmap
+                slice_ds_clipped = slice_ds_interp.clip(min_valid_vals, max_valid_vals)
                 # Plot with HoloViews (heatmap with contours)
-                heatmap = slice_ds_interp.hvplot.quadmesh(
+                heatmap = slice_ds_clipped.hvplot.contourf(
                     x='latitude',
                     y='depth',
                     cmap=colourmap,
@@ -221,16 +227,23 @@ class ModelEntry:
                     clabel=self.variable[j].units,
                     clim=(min_valid_vals, max_valid_vals),
                     xlim=(lat_s_slice,lat_n_slice),
-                    ylim=(0,bathy_vals.max())
+                    ylim=(0,depth_slice),
+                    levels=50,
                 )
-                contours = slice_ds.hvplot.contour(
-                    x='latitude', y='depth',
-                    color='black',
-                    line_width=0.5,
-                    value_label=True,
-                )
-                # export to html or png
-                self.__export(heatmap*contours*bathy_polygon,html=html,var_name=self.variable[j].name,month=self.month[i])
+                if self.traj_path is not None:
+                    waypoints = pd.read_csv(self.traj_path)
+                    trajectory = waypoints.hvplot.line(
+                        x="latitude",
+                        y="depth",
+                        color="black",
+                        linewidth=2,
+                        legend=False
+                    )
+                    self.__export(heatmap * bathy_polygon * trajectory, html=html, var_name=self.variable[j].name,
+                                  month=self.month[i])
+                else:
+                    # export to html or png
+                    self.__export(heatmap*bathy_polygon,html=html,var_name=self.variable[j].name,month=self.month[i])
 
     def plot_ice_extent(self,longitude:float,lat_n_slice:float,lat_s_slice:float,html:bool=False,threshold:float=0.05):
         """
@@ -406,11 +419,11 @@ class ModelEntry:
         :return:
         """
         try:
-            max_valid_vals = np.nanpercentile(ds_var[var_name].values, 95)
-            min_valid_vals = np.nanpercentile(ds_var[var_name].values, 5)
+            max_valid_vals = np.nanpercentile(ds_var[var_name].values,98)
+            min_valid_vals = np.nanpercentile(ds_var[var_name].values,2)
         except KeyError:
-            max_valid_vals = np.nanpercentile(ds_var.values, 95)
-            min_valid_vals = np.nanpercentile(ds_var.values, 5)
+            max_valid_vals = np.nanpercentile(ds_var.values,98)
+            min_valid_vals = np.nanpercentile(ds_var.values,2)
         return max_valid_vals, min_valid_vals
 
     def __create_month_dt(self,month:str):

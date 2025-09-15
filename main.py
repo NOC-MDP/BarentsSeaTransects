@@ -20,8 +20,6 @@ NEMO-MEDUSA Model preprocessing steps:
 The code uses frozen classes for extent and variable entries reducing the risk of their parameters being altered after
 creation/specification.
 
-NOTE: the method __process_datasets in the model entry class currently hard codes the lat N and lat S and depth slices,
-so these may need to be changed if the extent is changed.
 
 """
 from core import Extent, ModelEntry, VariableEntry
@@ -40,9 +38,10 @@ def main():
                     west=-180
                     )
     # set the latitude start, end slices as well as depth slice. These may require tweaking
-    latitude_n_slice = 79
+    latitude_n_slice = 81
     latitude_s_slice = 72
     depth_slice = 500
+    traj_path = "trajectory.csv"
 
     NEMO_MEDUSA_Phy = ModelEntry(dataset_id="NEMO_MEDUSA_Phy",
                                  variable=[VariableEntry(name="thetao",
@@ -58,7 +57,8 @@ def main():
                                                        ],
                                  extent=extent,
                                  output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_T.nc",
-                                 ORCA=True
+                                 ORCA=True,
+                                 traj_path=traj_path,
                                  )
 
     NEMO_MEDUSA_BGC = ModelEntry(dataset_id="NEMO_MEDUSA_BGC",
@@ -68,7 +68,8 @@ def main():
                                                          units="mmolm-3",)],
                                  extent=extent,
                                  output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_CHL.nc",
-                                 ORCA=True)
+                                 ORCA=True,
+                                 traj_path=traj_path,)
 
     NEMO_MEDUSA_Phy.get_data()
     NEMO_MEDUSA_BGC.get_data()
@@ -76,48 +77,49 @@ def main():
     NEMO_MEDUSA_BGC.plot_transects(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice,depth_slice=depth_slice)
     NEMO_MEDUSA_Phy.plot_transects(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice,depth_slice=depth_slice)
 
-    # Arctic_Phys = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1M-m",
-    #                          variable=[VariableEntry(name="thetao",
-    #                                                    plot_name="temperature",
-    #                                                    colourmap="thermal",
-    #                                                    units="degreesC",
-    #                                                    ),
-    #                                      VariableEntry(name="so",
-    #                                                    plot_name="salinity",
-    #                                                    colourmap="haline",
-    #                                                    units="PSU"
-    #                                                    )
-    #                                      ],
-    #                          file_format="zarr",
-    #                          extent=extent,)
-    #
-    # Arctic_Phys.get_data()
-    #
-    # Arctic_BGS = ModelEntry(dataset_id="cmems_mod_arc_bgc_anfc_ecosmo_P1M-m",
-    #                         variable=[VariableEntry(name="chl",
-    #                                                 plot_name="chlorophyll",
-    #                                                 colourmap="algae",
-    #                                                 units="mmolm-3")
-    #                                   ],
-    #                         file_format="zarr",
-    #                         extent=extent)
-    #
-    # Arctic_BGS.get_data()
+    Arctic_Phys = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1M-m",
+                             variable=[VariableEntry(name="thetao",
+                                                       plot_name="temperature",
+                                                       colourmap="thermal",
+                                                       units="degreesC",
+                                                       ),
+                                         VariableEntry(name="so",
+                                                       plot_name="salinity",
+                                                       colourmap="haline",
+                                                       units="PSU"
+                                                       )
+                                         ],
+                             file_format="zarr",
+                             extent=extent,)
 
-    # Arctic_BGS.plot_transects(longitude=30.0,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice)
-    # Arctic_Phys.plot_transects(longitude=30.0,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice)
+    Arctic_Phys.get_data()
 
-    # Arctic_ICE = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1D-m",
-    #                         variable=[VariableEntry(name="siconc",
-    #                                                 plot_name="Sea Ice Extent",
-    #                                                 units="% (0,1)",)],
-    #                         extent=extent,
-    #                         file_format="zarr",
-    #                         )
-    #
-    # Arctic_ICE.get_data()
-    # Arctic_ICE.plot_map(html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice)
-    # Arctic_ICE.plot_ice_extent(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice)
+    Arctic_BGS = ModelEntry(dataset_id="cmems_mod_arc_bgc_anfc_ecosmo_P1M-m",
+                            variable=[VariableEntry(name="chl",
+                                                    plot_name="chlorophyll",
+                                                    colourmap="algae",
+                                                    units="mmolm-3")
+                                      ],
+                            file_format="zarr",
+                            extent=extent)
+
+    Arctic_BGS.get_data()
+
+    Arctic_BGS.plot_transects(longitude=30.0,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice)
+    Arctic_Phys.plot_transects(longitude=30.0,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice)
+
+    Arctic_ICE = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1D-m",
+                            variable=[VariableEntry(name="siconc",
+                                                    plot_name="Sea Ice Extent",
+                                                    colourmap="ice",
+                                                    units="% (0,1)",)],
+                            extent=extent,
+                            file_format="zarr",
+                            )
+
+    Arctic_ICE.get_data()
+    Arctic_ICE.plot_map(html=html,lat_n_slice=90,lat_s_slice=latitude_s_slice)
+    Arctic_ICE.plot_ice_extent(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice)
 
     NEMO_MEDUSA_ICE = ModelEntry(dataset_id="NEMO_MEDUSA_ICE",
                             variable=[VariableEntry(name="siconc",
@@ -128,7 +130,7 @@ def main():
                             ORCA=True)
 
     NEMO_MEDUSA_ICE.get_data()
-
+    NEMO_MEDUSA_ICE.plot_map(html=html,lat_n_slice=90,lat_s_slice=latitude_s_slice)
     NEMO_MEDUSA_ICE.plot_ice_extent(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice)
 
 if __name__ == "__main__":
