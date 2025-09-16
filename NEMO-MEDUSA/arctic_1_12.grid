@@ -1,0 +1,9 @@
+# Suppose lon_min = -180, lon_max = 180
+#      lat_min = 50,  lat_max = 90
+gridtype = lonlat
+xsize = 3338
+ysize = 879
+xfirst = -180
+xinc = 0.10785
+yfirst = 50
+yinc = 0.0455

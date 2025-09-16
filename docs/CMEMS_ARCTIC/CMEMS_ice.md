@@ -15,38 +15,26 @@ Daily mean video showing ice extent for 2023
 
 
 ### January
-![Jan Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/January/ice_extent_day_1.png)
-![Jan Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/January/siconc.png)
+![Jan Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_1_85_65_-18_90.png)
 ### February
-![Feb Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/February/ice_extent_day_32.png)
-![Feb Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/February/siconc.png)
+![Feb Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_32_85_65_-18_90.png)
 ### March
-![Mar Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/March/ice_extent_day_60.png)
-![Mar Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/March/siconc.png)
+![Mar Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_60_85_65_-18_90.png)
 ### April
-![Apr Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/April/ice_extent_day_91.png)
-![Apr Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/April/siconc.png)
+![Apr Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_91_85_65_-18_90.png)
 ### May
-![May Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/May/ice_extent_day_121.png)
-![May Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/May/siconc.png)
+![May Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_121_85_65_-18_90.png)
 ### June
-![Jun Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/June/ice_extent_day_152.png)
-![Jun Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/June/siconc.png)
+![Jun Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_152_85_65_-18_90.png)
 ### July
-![Jul Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/July/ice_extent_day_182.png)
-![Jul Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/July/siconc.png)
+![Jul Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_182_85_65_-18_90.png)
 ### August
-![Aug Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/August/ice_extent_day_213.png)
-![Aug Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/August/siconc.png)
+![Aug Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_213_85_65_-18_90.png)
 ### September
-![Sept Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/September/ice_extent_day_244.png)
-![Sept Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/September/siconc.png)
+![Sept Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_244_85_65_-18_90.png)
 ### October
-![Oct Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/October/ice_extent_day_274.png)
-![Oct Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/October/siconc.png)
+![Oct Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_274_85_65_-18_90.png)
 ### November
-![Nov Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/November/ice_extent_day_305.png)
-![Nov Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/November/siconc.png)
+![Nov Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_305_85_65_-18_90.png)
 ### December
-![Dec Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/December/ice_extent_day_335.png)
-![Dec Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/December/siconc.png)
+![Dec Ice Extent](../cmems_mod_arc_phy_anfc_6km_detided_P1D-m/2023/siconc_day_335_85_65_-18_90.png)

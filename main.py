@@ -31,107 +31,126 @@ def main():
     """
     html = False
 
-    extent = Extent(year=2023,
-                    north=90,
-                    south=50,
-                    east=180,
-                    west=-180
-                    )
-    # set the latitude start, end slices as well as depth slice. These may require tweaking
+    data_extent = Extent(
+        year=2023,
+        north=90,
+        south=50,
+        east=180,
+        west=-180
+    )
+    # set the latitude start, end slices, longitude and depth for transect plots
+    lon_transect = 30
+    depth_slice = 500
     latitude_n_slice = 81
     latitude_s_slice = 72
-    depth_slice = 500
-    traj_path = "trajectory.csv"
 
-    NEMO_MEDUSA_Phy = ModelEntry(dataset_id="NEMO_MEDUSA_Phy",
-                                 variable=[VariableEntry(name="thetao",
-                                                         plot_name="temperature",
-                                                         colourmap="thermal",
-                                                         units="degreesC",
-                                 ),
-                                            VariableEntry(name="so",
-                                                         plot_name="salinity",
-                                                         colourmap="haline",
-                                                         units="PSU",
-                                                         )
-                                                       ],
-                                 extent=extent,
-                                 output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_T.nc",
-                                 ORCA=True,
-                                 traj_path=traj_path,
-                                 )
+    # set longitude and latitude slices for plotting maps
+    longitude_e_slice = -18
+    longitude_w_slice = 90
+    latitude_n_slice_map = 85
+    latitude_s_slice_map = 65
 
-    NEMO_MEDUSA_BGC = ModelEntry(dataset_id="NEMO_MEDUSA_BGC",
-                                 variable=[VariableEntry(name="CHL",
-                                                         plot_name="chlorophyll",
-                                                         colourmap="algae",
-                                                         units="mmolm-3",)],
-                                 extent=extent,
-                                 output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_CHL.nc",
-                                 ORCA=True,
-                                 traj_path=traj_path,)
-
-    NEMO_MEDUSA_Phy.get_data()
-    NEMO_MEDUSA_BGC.get_data()
-
-    NEMO_MEDUSA_BGC.plot_transects(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice,depth_slice=depth_slice)
-    NEMO_MEDUSA_Phy.plot_transects(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice,depth_slice=depth_slice)
-
-    Arctic_Phys = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1M-m",
-                             variable=[VariableEntry(name="thetao",
-                                                       plot_name="temperature",
-                                                       colourmap="thermal",
-                                                       units="degreesC",
-                                                       ),
-                                         VariableEntry(name="so",
-                                                       plot_name="salinity",
-                                                       colourmap="haline",
-                                                       units="PSU"
-                                                       )
-                                         ],
-                             file_format="zarr",
-                             extent=extent,)
-
-    Arctic_Phys.get_data()
-
-    Arctic_BGS = ModelEntry(dataset_id="cmems_mod_arc_bgc_anfc_ecosmo_P1M-m",
-                            variable=[VariableEntry(name="chl",
-                                                    plot_name="chlorophyll",
-                                                    colourmap="algae",
-                                                    units="mmolm-3")
-                                      ],
-                            file_format="zarr",
-                            extent=extent)
-
-    Arctic_BGS.get_data()
-
-    Arctic_BGS.plot_transects(longitude=30.0,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice)
-    Arctic_Phys.plot_transects(longitude=30.0,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice)
-
+    # set waypoints path for trajectory overlay
+    # traj_path = "trajectory.csv"
+    #
+    # NEMO_MEDUSA_Phy = ModelEntry(dataset_id="NEMO_MEDUSA_Phy",
+    #                              variable=[VariableEntry(name="thetao",
+    #                                                      plot_name="temperature",
+    #                                                      colourmap="thermal",
+    #                                                      units="degreesC",
+    #                              ),
+    #                                         VariableEntry(name="so",
+    #                                                      plot_name="salinity",
+    #                                                      colourmap="haline",
+    #                                                      units="PSU",
+    #                                                      )
+    #                                                    ],
+    #                              extent=data_extent,
+    #                              output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_T.nc",
+    #                              ORCA=True,
+    #                              traj_path=traj_path,
+    #                              )
+    #
+    # NEMO_MEDUSA_BGC = ModelEntry(dataset_id="NEMO_MEDUSA_BGC",
+    #                              variable=[VariableEntry(name="CHL",
+    #                                                      plot_name="chlorophyll",
+    #                                                      colourmap="algae",
+    #                                                      units="mmolm-3",)],
+    #                              extent=data_extent,
+    #                              output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_CHL.nc",
+    #                              ORCA=True,
+    #                              traj_path=traj_path,)
+    #
+    # NEMO_MEDUSA_Phy.get_data()
+    # NEMO_MEDUSA_BGC.get_data()
+    #
+    # NEMO_MEDUSA_BGC.plot_transects(longitude=lon_transect,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice,depth_slice=depth_slice)
+    # NEMO_MEDUSA_Phy.plot_transects(longitude=lon_transect,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice,depth_slice=depth_slice)
+    # NEMO_MEDUSA_BGC.plot_transects(longitude=lon_transect,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice,depth_slice=depth_slice,add_trajectory=True)
+    # NEMO_MEDUSA_Phy.plot_transects(longitude=lon_transect,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice,depth_slice=depth_slice,add_trajectory=True)
+    #
+    # Arctic_Phys = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1M-m",
+    #                          variable=[VariableEntry(name="thetao",
+    #                                                    plot_name="temperature",
+    #                                                    colourmap="thermal",
+    #                                                    units="degreesC",
+    #                                                    ),
+    #                                      VariableEntry(name="so",
+    #                                                    plot_name="salinity",
+    #                                                    colourmap="haline",
+    #                                                    units="PSU"
+    #                                                    )
+    #                                      ],
+    #                          file_format="zarr",
+    #                          extent=data_extent,
+    #                          traj_path=traj_path,
+    #                          )
+    #
+    # Arctic_Phys.get_data()
+    #
+    # Arctic_BGS = ModelEntry(dataset_id="cmems_mod_arc_bgc_anfc_ecosmo_P1M-m",
+    #                         variable=[VariableEntry(name="chl",
+    #                                                 plot_name="chlorophyll",
+    #                                                 colourmap="algae",
+    #                                                 units="mmolm-3")
+    #                                   ],
+    #                         file_format="zarr",
+    #                         extent=data_extent,
+    #                         traj_path=traj_path,
+    #                         )
+    #
+    # Arctic_BGS.get_data()
+    #
+    # Arctic_BGS.plot_transects(longitude=lon_transect,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice)
+    # Arctic_Phys.plot_transects(longitude=lon_transect,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice)
+    # Arctic_BGS.plot_transects(longitude=lon_transect,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice,add_trajectory=True)
+    # Arctic_Phys.plot_transects(longitude=lon_transect,html=html,lat_n_slice=latitude_n_slice,lat_s_slice=latitude_s_slice,depth_slice=depth_slice,add_trajectory=True)
+    #
     Arctic_ICE = ModelEntry(dataset_id="cmems_mod_arc_phy_anfc_6km_detided_P1D-m",
                             variable=[VariableEntry(name="siconc",
                                                     plot_name="Sea Ice Extent",
                                                     colourmap="ice",
                                                     units="% (0,1)",)],
-                            extent=extent,
+                            extent=data_extent,
                             file_format="zarr",
                             )
 
     Arctic_ICE.get_data()
-    Arctic_ICE.plot_map(html=html,lat_n_slice=90,lat_s_slice=latitude_s_slice)
-    Arctic_ICE.plot_ice_extent(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice)
+    Arctic_ICE.plot_map(html=html,lat_n_slice=latitude_n_slice_map,lat_s_slice=latitude_s_slice_map,lon_e_slice=longitude_e_slice,lon_w_slice=longitude_w_slice,plot_days=True)
+    Arctic_ICE.plot_ice_extent(longitude=lon_transect,html=html,lat_s_slice=latitude_s_slice_map,lat_n_slice=latitude_n_slice_map)
 
-    NEMO_MEDUSA_ICE = ModelEntry(dataset_id="NEMO_MEDUSA_ICE",
-                            variable=[VariableEntry(name="siconc",
-                                                    plot_name="sea ice",
-                                                    units="km")],
-                            extent=extent,
-                            output_path="NEMO-MEDUSA/NEMO_MEDUSA_2023_ICE.nc",
-                            ORCA=True)
-
-    NEMO_MEDUSA_ICE.get_data()
-    NEMO_MEDUSA_ICE.plot_map(html=html,lat_n_slice=90,lat_s_slice=latitude_s_slice)
-    NEMO_MEDUSA_ICE.plot_ice_extent(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice)
+    # NEMO_MEDUSA_ICE = ModelEntry(dataset_id="ICE_remapped",
+    #                         variable=[VariableEntry(name="siconc",
+    #                                                 plot_name="sea ice",
+    #                                                 colourmap="ice",
+    #                                                 units="km")],
+    #                         extent=extent,
+    #                         output_path="NEMO-MEDUSA/ICE_remapped_masked.nc",
+    #                         ORCA=True)
+    #
+    # NEMO_MEDUSA_ICE.get_data()
+    # NEMO_MEDUSA_ICE.plot_map(html=html,lat_n_slice=90,lat_s_slice=latitude_s_slice)
+    # NEMO_MEDUSA_ICE.plot_ice_extent(longitude=30.0,html=html,lat_s_slice=latitude_s_slice,lat_n_slice=latitude_n_slice)
 
 if __name__ == "__main__":
     main()

@@ -14,7 +14,7 @@ from attrs import frozen, define
 import cmocean.cm as cmo
 import cftime
 import cartopy.crs as ccrs
-import matplotlib.colors as mcolors
+import multiprocessing as mp
 
 hv.extension('bokeh')
 
@@ -45,6 +45,7 @@ class ModelEntry:
     month: list[str] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"]
     bathy_path: str = "GEBCO_2025_sub_ice.nc"
     traj_path: str = None
+    export_path: str = None
 
     def get_data(self) -> ():
         """
@@ -82,67 +83,91 @@ class ModelEntry:
             # TODO need to add a check here to ensure local data source has extent and variables etc required
             pass
 
-    def plot_map(self,lat_n_slice:float,lat_s_slice:float,html:bool=False):
-        """
-        Creates monthly transect plots for every variable entry in the model entry
-        :param lat_s_slice:
-        :param lat_n_slice:
-        :param html:
-        :return:
-        """
-        # check longitude is within model entry extent
-
-        # get dataset, and depth and latitude/longitude slices
+    def plot_map(self, lat_n_slice: float, lat_s_slice: float, lon_e_slice: float, lon_w_slice: float,
+                 html: bool = False, data_slice_n=90, further_south=10, plot_days=False):
+        """ Creates monthly transect plots for every variable entry in the model entry
+        :param plot_days:
+        :param further_south: this slices data further south than requested plot extent, required for arctic plots due to extreme latitude curve
+         :param data_slice_n: this slices data further north than the requested plotting extent, required for arctic plots.
+         :param lon_w_slice:
+         :param lon_e_slice:
+         :param lat_s_slice:
+         :param lat_n_slice:
+         :param html:
+         :return: """
+        # check longitude is within model entry extent # get dataset, and depth and latitude/longitude slices
         ds = self.__process_datasets()
         for j in range(self.variable.__len__()):
-            for i in range(self.month.__len__()):
-                month_dt, next_month_dt = self.__create_month_dt(month=self.month[i])
-                max_valid_vals, min_valid_vals = self.__colourmap_limits(ds, var_name=self.variable[j].name)
-
-                # slicing dataset four ways!
-                slice_ds = ds.sel(
-                                      latitude=slice(lat_s_slice, lat_n_slice),
-                                      time=slice(month_dt, next_month_dt)
-                                      )
-                # create colourmap
-                if self.variable[j].colourmap is None:
-                    colourmap = cmo.thermal
-                elif self.variable[j].colourmap == "haline":
-                    colourmap = cmo.haline
-                elif self.variable[j].colourmap == "algae":
-                    colourmap = cmo.algae
-                elif self.variable[j].colourmap == "thermal":
-                    colourmap = cmo.thermal
-                elif self.variable[j].colourmap == "ice":
-                    colourmap = cmo.ice
+            ds_var = ds[self.variable[j].name]
+            if plot_days:
+                plot_steps = 365
+            else: plot_steps = 12
+            for i in range(plot_steps):
+                print(f"Plotting step {i+1}")
+                max_valid_vals, min_valid_vals = self.__colourmap_limits(ds_var, var_name=self.variable[j].name)
+                if plot_days:
+                    first_dt, next_dt = self.__create_day_dt(day_of_year=i+1)
                 else:
-                    raise Exception(f"Unknown colourmap: {self.variable[j].colourmap}")
-                # tiles = gv.tile_sources.EsriOceanBase()
+                    first_dt, next_dt = self.__create_month_dt(month=self.month[i])
+                # run plotting code in subprocess so that memory is constrained
+                p = mp.Process(target=self._plot_one, args=(i,j,html,ds_var,first_dt,next_dt,max_valid_vals,min_valid_vals,
+                                                             lat_s_slice,lat_n_slice,lon_e_slice,lon_w_slice,further_south,
+                                                             data_slice_n,plot_days))
+                p.start()
+                p.join()
+                if p.exitcode !=0:
+                    raise RuntimeError(f"Process exited with code {p.exitcode}")
+    # plotting function to plot a single map (wrapped in subprocess to ensure memory is constrained)
+    def _plot_one(self,i,j,html,ds_var,first_dt,next_dt,max_valid_vals,min_valid_vals,
+                   lat_s_slice,lat_n_slice,lon_e_slice,lon_w_slice,further_south,
+                   data_slice_n,plot_days):
+        # ds_var = ds_var.where(ds_var != 0, np.nan)
+        # ds_var_renamed = ds_var.rename( # {"time_counter": "time", "lat": "latitude", "lon": "longitude"})
+        # slicing dataset four ways!
+        slice_ds = ds_var.sel( latitude=slice(lat_s_slice-further_south, data_slice_n), time=slice(first_dt, next_dt) )
+        # create colourmap
+        if self.variable[j].colourmap is None:
+            colourmap = cmo.thermal
+        elif self.variable[j].colourmap == "haline":
+            colourmap = cmo.haline
+        elif self.variable[j].colourmap == "algae":
+            colourmap = cmo.algae
+        elif self.variable[j].colourmap == "thermal":
+            colourmap = cmo.thermal
+        elif self.variable[j].colourmap == "ice":
+            colourmap = cmo.ice
+        else: raise Exception(f"Unknown colourmap: {self.variable[j].colourmap}")
+        #tiles = gv.tile_sources.EsriOceanBase()
+        # hvplots = gv.util.get_tile_rgb(tiles, bbox=(-40, 60, 100, 85),
+        # zoom_level=5).opts(width=1000, # height=800, # #projection=ccrs.NorthPolarStereo() # )
+        # Plot with HoloViews (heatmap with contours)
+        if plot_days:
+            plot_title = f'{self.variable[j].plot_name} Map: Day {i+1} {self.extent.year}'
+        else:
+            plot_title = f'{self.variable[j].plot_name} Map: {self.month[i]} {self.extent.year}'
 
-                # hvplots = gv.util.get_tile_rgb(tiles, bbox=(-40, 60, 100, 85),
-                #                                zoom_level=5).opts(width=1000,
-                #                                                 height=800,
-                #                                                 #projection=ccrs.NorthPolarStereo()
-                #                                                   )
-                # Plot with HoloViews (heatmap with contours)
-                heatmap = slice_ds.hvplot.quadmesh(
-                    y='latitude',
-                    x='longitude',
-                    cmap=colourmap,
-                    colorbar=True,
-                    title=f'{self.variable[j].plot_name} Map: {self.month[i]} {self.extent.year}',
-                    width=1000,
-                    height=800,
-                    clabel=self.variable[j].units,
-                    clim=(min_valid_vals, max_valid_vals),
-                    crs=ccrs.PlateCarree(), projection=ccrs.NorthPolarStereo(),
-                    project=True, rasterize=True,
-                    features={"coastline":'50m','borders':'50m','ocean':'50m','land':'50m'},
+        heatmap = slice_ds.hvplot.quadmesh( y='latitude',
+                                            x='longitude',
+                                            cmap=colourmap,
+                                            colorbar=True,
+                                            title=plot_title,
+                                            width=1000, height=800,
+                                            clabel=self.variable[j].units,
+                                            clim=(min_valid_vals, max_valid_vals),
+                                            crs=ccrs.PlateCarree(),
+                                            projection=ccrs.NorthPolarStereo(),
+                                            project=True,
+                                            rasterize=True,
+                                            features={"coastline":'50m','borders':'50m','ocean':'50m','land':'50m'},
+                                            ylim=(lat_s_slice, lat_n_slice), xlim=(lon_w_slice, lon_e_slice), )
+        if plot_days:
+            id_str = f"{self.variable[j].name}_day_{i+1}_{lat_n_slice}_{lat_s_slice}_{lon_e_slice}_{lon_w_slice}"
+        else:
+            id_str = f"{self.variable[j].name}_{self.month[i]}_{lat_n_slice}_{lat_s_slice}_{lon_e_slice}_{lon_w_slice}"
 
-                )
-                self.__export(heatmap, html=html, var_name=self.variable[j].name, month=self.month[i])
+        self.__export(heatmap, html=html, id_str=id_str)
 
-    def plot_transects(self,longitude:float,lat_n_slice:float,lat_s_slice:float,depth_slice:float,html:bool=False):
+    def plot_transects(self,longitude:float,lat_n_slice:float,lat_s_slice:float,depth_slice:float,html:bool=False,add_trajectory:bool=False):
         """
         Creates monthly transect plots for every variable entry in the model entry
         :param depth_slice:
@@ -230,20 +255,24 @@ class ModelEntry:
                     ylim=(0,depth_slice),
                     levels=50,
                 )
-                if self.traj_path is not None:
+                if self.traj_path is not None and add_trajectory:
                     waypoints = pd.read_csv(self.traj_path)
                     trajectory = waypoints.hvplot.line(
                         x="latitude",
                         y="depth",
                         color="black",
-                        linewidth=2,
+                        line_width=2,
                         legend=False
                     )
-                    self.__export(heatmap * bathy_polygon * trajectory, html=html, var_name=self.variable[j].name,
-                                  month=self.month[i])
+                    id_str = f"{self.variable[j].name}_{self.month[i]}_{longitude}_{lat_n_slice}_{lat_s_slice}_{depth_slice}_trajectory"
+                    self.__export(heatmap * bathy_polygon * trajectory, html=html, id_str=id_str)
+                elif self.traj_path is None and add_trajectory:
+                    raise Exception("No trajectory available please set trajectory path in model entry")
                 else:
+                    id_str = f"{self.variable[j].name}_{self.month[i]}_{longitude}_{lat_n_slice}_{lat_s_slice}_{depth_slice}"
                     # export to html or png
-                    self.__export(heatmap*bathy_polygon,html=html,var_name=self.variable[j].name,month=self.month[i])
+                    self.__export(heatmap*bathy_polygon,html=html,id_str=id_str)
+        ds.close()
 
     def plot_ice_extent(self,longitude:float,lat_n_slice:float,lat_s_slice:float,html:bool=False,threshold:float=0.05):
         """
@@ -312,24 +341,29 @@ class ModelEntry:
                                 height=600,
                             )
             # export plots
-            self.__export(extents,html=html,var_name=self.variable[j].name,month="Annual")
+            id_str = f"{self.variable[j].name}_Monthy_Ice_Extent"
+            self.__export(extents,html=html,id_str=id_str)
+        ds.close()
 
 
-    def __export(self,hvplots,html:bool,month:str,var_name:str) -> ():
+
+    def __export(self,hvplots,html:bool,id_str:str) -> ():
         """
         exports the plots as either an interactive html page or png image.
         :param hvplots: hvplot object being exported
         :param html: bool true export as html, false export as png
-        :param month: month name as a string (or if not monthly a suitable folder name to store under year folder)
-        :param var_name: variable name as a string
         """
         if html:
             renderer = hv.renderer('bokeh')
             bokeh_plot = renderer.get_plot(hvplots).state
             show(bokeh_plot)
         else:
-            os.makedirs(f"docs/{self.dataset_id}/{self.extent.year}/{month}", exist_ok=True)
-            png_out = f"docs/{self.dataset_id}/{self.extent.year}/{month}/{var_name}.png"
+            if self.export_path is not None:
+                os.makedirs(self.export_path,exist_ok=True)
+                png_out = f"{self.export_path}/{id_str}.png"
+            else:
+                os.makedirs(f"docs/{self.dataset_id}/{self.extent.year}/", exist_ok=True)
+                png_out = f"docs/{self.dataset_id}/{self.extent.year}/{id_str}.png"
             hvplot.save(hvplots, filename=png_out, fmt="png")
 
     @staticmethod
@@ -375,11 +409,16 @@ class ModelEntry:
         # regrid ORCA grid to a regular one, rename variables and create valid cftime Datetime
         try:
             ds_var = ds_var.rename(
-                {"deptht": "depth", "time_counter": "time", "nav_lat": "latitude", "nav_lon": "longitude"})
+                {"deptht": "depth", "time_counter": "time", "lat": "latitude", "lon": "longitude"})
         except ValueError:
+            # maybe different lat/lon names?
+            try:
+                ds_var = ds_var.rename(
+                    {"deptht": "depth", "time_counter": "time", "nav_lat": "latitude", "nav_lon": "longitude"})
             # assume dataset is 2D
-            ds_var = ds_var.rename(
-                {"time_counter": "time", "nav_lat": "latitude", "nav_lon": "longitude"})
+            except ValueError:
+                ds_var = ds_var.rename(
+                    {"time_counter": "time", "lat": "latitude", "lon": "longitude"})
         ds_var = ds_var.where(ds_var != 0)
         lat = ds_var['latitude']
         lon = ds_var['longitude']
@@ -441,3 +480,73 @@ class ModelEntry:
             next_month_dt = cftime.Datetime360Day(next_month_dt.year, next_month_dt.month, next_month_dt.day, 0,
                                                   0, 0, 0)
         return month_dt, next_month_dt
+
+    def __create_day_dt(self,day_of_year:int):
+        """
+        Create the current and next month datetime objects.
+        :param month:
+        :return:
+        """
+        # create start of month datetime object
+        month_dt = datetime.strptime(f"{day_of_year:03} {self.extent.year}", "%j %Y")
+        next_month_dt = month_dt + relativedelta(months=+1)
+        if self.ORCA:
+            # convert datetime objects to cftime ones
+            month_dt = cftime.Datetime360Day(month_dt.year, month_dt.month, month_dt.day, 0, 0, 0, 0)
+            next_month_dt = cftime.Datetime360Day(next_month_dt.year, next_month_dt.month, next_month_dt.day, 0,
+                                                  0, 0, 0)
+        return month_dt, next_month_dt
+
+    def _plot_one_map(args):
+        """Worker function run in a separate process."""
+        (self_obj, var_idx, step_idx, plot_days,
+         lat_n_slice, lat_s_slice, lon_e_slice, lon_w_slice,
+         html, data_slice_n, further_south) = args
+
+        # re-open dataset inside the child (important!)
+        ds = xr.open_zarr(
+            f"{self_obj.output_path}.zarr",
+            consolidated=True,
+            chunks={"time": 1, "latitude": 256, "longitude": 256}
+        )
+
+        try:
+            var = self_obj.variable[var_idx]
+            if plot_days:
+                first_dt, next_dt = self_obj.__create_day_dt(day_of_year=step_idx + 1)
+                plot_title = f"{var.plot_name} Map: Day {step_idx + 1} {self_obj.extent.year}"
+                id_str = f"{var.name}_day_{step_idx + 1}_{lat_n_slice}_{lat_s_slice}_{lon_e_slice}_{lon_w_slice}"
+            else:
+                first_dt, next_dt = self_obj.__create_month_dt(month=self_obj.month[step_idx])
+                plot_title = f"{var.plot_name} Map: {self_obj.month[step_idx]} {self_obj.extent.year}"
+                id_str = f"{var.name}_{self_obj.month[step_idx]}_{lat_n_slice}_{lat_s_slice}_{lon_e_slice}_{lon_w_slice}"
+
+            # limits and colourmap
+            max_valid_vals, min_valid_vals = self_obj.__colourmap_limits(ds, var_name=var.name)
+            cmap_lookup = {"haline": cmo.haline, "algae": cmo.algae,
+                           "thermal": cmo.thermal, "ice": cmo.ice}
+            colourmap = cmap_lookup.get(var.colourmap, cmo.thermal)
+
+            # select only needed data
+            da = ds[var.name].sel(
+                latitude=slice(lat_s_slice - further_south, data_slice_n),
+                longitude=slice(lon_w_slice, lon_e_slice),
+                time=slice(first_dt, next_dt)
+            )
+            field2d = da.mean(dim="time").load()
+
+            heatmap = field2d.hvplot.quadmesh(
+                y="latitude", x="longitude", cmap=colourmap,
+                clim=(min_valid_vals, max_valid_vals),
+                title=plot_title, clabel=var.units,
+                width=1000, height=800,
+                crs=ccrs.PlateCarree(), projection=ccrs.NorthPolarStereo(),
+                project=True, rasterize=False,
+                features={"coastline": "50m", "borders": "50m", "ocean": "50m", "land": "50m"},
+                ylim=(lat_s_slice, lat_n_slice), xlim=(lon_w_slice, lon_e_slice),
+            )
+
+            self_obj.__export(heatmap, html=html, id_str=id_str)
+
+        finally:
+            ds.close()
